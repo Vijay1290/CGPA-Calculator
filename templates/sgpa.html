@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>SGPA CALCULATOR</title>
+      <!-- BOOTSTRAP 5 -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+      <!-- GOOGLE FONT -->
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+      <!-- ANIMATION -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+      <!--FONT AWESOME -->
+      <script src="https://kit.fontawesome.com/0c9d985b68.js" crossorigin="anonymous"></script>
+      <style>
+         h4{
+         font-family: 'Playfair Display', serif;
+         }
+         form{
+         max-width: 700px;
+         margin: auto;
+         margin-top: 50px;
+         border: solid 0.5px;
+         padding: 10px;
+         border-radius: 25px;
+         }
+         label:hover{
+         --bs-bg-opacity: 1;
+         color: rgba(var(--bs-primary-rgb),var(--bs-bg-opacity))!important;
+         text-decoration: underline;
+         }
+         select , input{
+         background: none repeat scroll 0 0 #FFFFFF;
+         border: 1px solid #E5E5E5;
+         border-radius: 10px 5px 5px 5px;
+         box-shadow: 0 0 10px #E8E8E8 inset;
+         }
+         .form-select-container {
+         display: flex;
+         align-items: center;
+         }
+         .form-select-container label {
+         margin-right: 40px;
+         width : 150px;
+         }
+         .btn-primary {
+         background-color: blue;
+         color: white;
+         border: none;
+         border-radius: 4px;
+         padding: 10px 20px;
+         font-size: 16px;
+         font-weight: bold;
+         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+         transition: transform 0.2s, box-shadow 0.2s;
+         }
+         .btn-primary:hover {
+         transform: translateY(-2px);
+         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+         }
+         .div1 {
+         text-decoration: none;
+         display: inline-block;
+         }
+         .div1:hover {
+         text-decoration: underline;
+         }	
+         .home_page {
+         position: absolute;
+         padding : 10px;
+         top: -15px;
+         left: 0;
+         }
+         body {
+         overflow-x: hidden;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="fs-1 animate__animated animate__backInRight home_page" id="div1">
+         <a href="/">
+            <h1 class="div1">
+               <i class="fa-solid fa-arrow-left" id="arrow">
+               </i>
+               Go to home
+            </h1>
+         </a>
+      </div>
+      <form method="POST" action="/sgpa">
+         <div class="container" id="container">
+            <div class="row m-3">
+               <p class="text-danger"><h3>{{ message }}</h3></p>
+            </div>
+            <h4 class="mb-3 pb-3 pt-3 animate__animated animate__backInRight" style="text-align:center;">Enter your GRADE & CREDIT</h4>
+            <div class="row mb-3">
+               <div class="col-md-12 col-sm-6 form-select-container">
+                  <label for="subject_1" class="form-label">SUBJECT-1:</label>
+               </div>
+               <div class="col-md-6">
+                  <div class="form-group">
+                     <select class="form-select" name="subject_1" required>
+                        <option selected disabled value="">Enter GRADE OF SUBJECT-1</option>
+                        <option value="A++">A++</option>
+                        <option value="A+">A+</option>
+                        <option value="A">A</option>
+                        <option value="B+">B+</option>
+                        <option value="B">B</option>
+                        <option value="C+">C+</option>
+                        <option value="C">C</option>
+                        <option value="D+">D+</option>
+                        <option value="D1">D1</option>
+                        <option value="D2">D2</option>
+                        <option value="D3">D3</option>
+                     </select>
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="form-group">
+                     <input type="text" class="form-control" name="credit_1" title="Please enter a value between 0 to 10 " placeholder="Credit for SUBJECT-1" pattern="[0-9]|10" required/>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="row mb-3">
+            <div class="col-md-6" style="text-align: center;">
+               <a class="btn btn-primary" onclick="addDiv()"><i class="fa-sharp fa-solid fa-plus"></i></a>
+            </div>
+            <div class="col-md-6"style="text-align: center;">
+               <a class="btn btn-primary" onclick="removeDiv()"><i class="fa-sharp fa-solid fa-minus"></i></a>
+            </div>
+         </div>
+         <div class="row mb-3">
+            <div class="col-md-12 col-sm-6 d-flex justify-content-center">
+               <button class="btn btn-primary" onclick="Submit()">Submit</button>
+            </div>
+         </div>
+      </form>
+      <script>
+         var counter = 1;
+         
+         function addDiv() {
+         if (counter > 13) {
+         alert("You can't add more subjects");
+         return;
+         }
+         
+         var divId = "subject_" + (counter + 1);
+         
+         var div = document.createElement("div");
+         div.setAttribute("id", divId);
+         div.classList.add("row", "mb-3");
+         
+         var col1 = document.createElement("div");
+         col1.classList.add("col-md-12", "col-sm-6", "form-select-container");
+         var label = document.createElement("label");
+         label.classList.add("form-label");
+         label.setAttribute("for", "subject_" + (counter + 1));
+         label.innerHTML = "SUBJECT-" + (counter + 1) + ":";
+         
+         col1.appendChild(label);
+         
+         var col2 = document.createElement("div");
+         col2.classList.add("col-md-6");
+         var formGroup2 = document.createElement("div");
+         formGroup2.classList.add("form-group");
+         var select = document.createElement("select");
+         select.classList.add("form-select");
+         select.setAttribute("name", "subject_" + (counter + 1));
+         select.setAttribute("required", "required");
+         var option1 = document.createElement("option");
+         option1.setAttribute("selected", "selected");
+         option1.setAttribute("disabled", "disabled");
+         option1.setAttribute("value", "");
+         option1.innerHTML = "Enter GRADE OF SUBJECT-" + (counter + 1);
+         var option2 = document.createElement("option");
+         option2.setAttribute("value", "A++");
+         option2.innerHTML = "A++";
+         var option3 = document.createElement("option");
+         option3.setAttribute("value", "A+");
+         option3.innerHTML = "A+";
+         var option4 = document.createElement("option");
+         option4.setAttribute("value", "A");
+         option4.innerHTML = "A";
+         var option5 = document.createElement("option");
+         option5.setAttribute("value", "B+");
+         option5.innerHTML = "B+";
+         var option6 = document.createElement("option");
+         option6.setAttribute("value", "B");
+         option6.innerHTML = "B";
+         var option7 = document.createElement("option");
+         option7.setAttribute("value", "C+");
+         option7.innerHTML = "C+";
+         var option8 = document.createElement("option");
+         option8.setAttribute("value", "C");
+         option8.innerHTML = "C";
+         var option9 = document.createElement("option");
+         option9.setAttribute("value", "D+");
+         option9.innerHTML = "D+";
+         var option10 = document.createElement("option");
+         option10.setAttribute("value", "D1");
+         option10.innerHTML = "D1";
+         var option11 = document.createElement("option");
+         option11.setAttribute("value", "D2");
+         option11.innerHTML = "D2";
+         var option12 = document.createElement("option");
+         option12.setAttribute("value", "D3");
+         option12.innerHTML = "D3";
+         
+         select.appendChild(option1);
+         select.appendChild(option2);
+         select.appendChild(option3);
+         select.appendChild(option4);
+         select.appendChild(option5);
+         select.appendChild(option6);
+         select.appendChild(option7);
+         select.appendChild(option8);
+         select.appendChild(option9);
+         select.appendChild(option10);
+         select.appendChild(option11);
+         select.appendChild(option12);
+         
+         formGroup2.appendChild(select);
+         col2.appendChild(formGroup2);
+         
+         var col3 = document.createElement("div");
+         col3.classList.add("col-md-6");
+         var formGroup3 = document.createElement("div");
+         formGroup3.classList.add("form-group");
+         var input3 = document.createElement("input");
+         input3.setAttribute("type", "text");
+         input3.setAttribute("class", "form-control");
+         input3.setAttribute("name", "credit_" + (counter + 1));
+         input3.setAttribute("placeholder", "Credit for SUBJECT-" + (counter + 1));
+         input3.setAttribute("pattern", "[0-9]|10");
+         input3.setAttribute("required", "required");
+         input3.setAttribute("title", "Please enter a value between 0 to 10")
+         
+         formGroup3.appendChild(input3);
+         col3.appendChild(formGroup3);
+         
+         div.appendChild(col1);
+         div.appendChild(col2);
+         div.appendChild(col3);
+         
+         var container = document.getElementById("container");
+         container.appendChild(div);
+         
+         counter++;
+         }
+         
+         function removeDiv() {
+         if (counter > 1) {
+         var divId = "subject_" + counter;
+         var div = document.getElementById(divId);
+         div.parentNode.removeChild(div);
+         counter--;
+         }
+         else{
+            alert("You can't delete first subject entry...!")
+         }
+         }
+         
+         const div1 = document.getElementById('div1');
+         const arrow = document.getElementById('arrow');
+         div1.addEventListener('mouseover', function() {
+         arrow.classList.add('fa-beat-fade');
+         });
+         
+         div1.addEventListener('mouseout', function() {
+         arrow.classList.remove('fa-beat-fade');
+         });
+      </script>
+   </body>
+</html>
